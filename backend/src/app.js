@@ -14,7 +14,7 @@ const corsOption = {
 };
 
 app.get("/test", cors(corsOption), (request, response) => {
-  response.send("Hello from express");
+  response.send("Hello from express with");
 });
 
 app.listen(PORT, () => {
