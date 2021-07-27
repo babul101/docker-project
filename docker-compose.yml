@@ -25,3 +25,15 @@ services:
       - "3001:3001"
     environment:
       - PORT=3001
+      - MONGO_PORT=27017
+      - MONGO_URL=api_mongo
+
+  api_mongo:
+    image: mongo:latest
+    volumes:
+      - mongodb_api:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb_api:

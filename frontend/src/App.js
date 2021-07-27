@@ -5,6 +5,7 @@ import "./App.css";
 
 function App() {
   const [response, setResponse] = useState("");
+  const [mongoHealth, setMongoHealth] = useState("fail");
 
   useEffect(() => {
     const API_URL = process.env.REACT_APP_API_URL || "localhost";
@@ -18,6 +19,21 @@ function App() {
     fetchData();
     return () => {};
   }, []);
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      const API_URL = process.env.REACT_APP_API_URL || "localhost";
+      const API_PORT = process.env.REACT_APP_API_PORT || "3001";
+      const API_BASE_ADDRESS = `http://${API_URL}:${API_PORT}`;
+      const result = await axios(`${API_BASE_ADDRESS}/healthcheck`);
+      setMongoHealth(result.data.status);
+    };
+    const checkTimer = setInterval(() => checkHealth(), 1000);
+    return () => {
+      clearInterval(checkTimer);
+    };
+  }, []);
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -36,6 +52,11 @@ function App() {
           the response is {response}
         </a>
       </header>
+      <h4>
+        {mongoHealth === "fail"
+          ? "Mongodb connection fail"
+          : "Mongodb connection was successful"}
+      </h4>
     </div>
   );
 }
