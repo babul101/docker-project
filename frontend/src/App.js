@@ -13,7 +13,7 @@ function App() {
     const API_BASE_ADDRESS = `http://${API_URL}:${API_PORT}`;
     console.log("Request on address ", API_BASE_ADDRESS);
     const fetchData = async () => {
-      const result = await axios(`${API_BASE_ADDRESS}/test`);
+      const result = await axios(`${API_BASE_ADDRESS}/api/test`);
       setResponse(result.data);
     };
     fetchData();
@@ -25,9 +25,10 @@ function App() {
       const API_URL = process.env.REACT_APP_API_URL || "localhost";
       const API_PORT = process.env.REACT_APP_API_PORT || "3001";
       const API_BASE_ADDRESS = `http://${API_URL}:${API_PORT}`;
-      const result = await axios(`${API_BASE_ADDRESS}/healthcheck`);
+      const result = await axios(`${API_BASE_ADDRESS}/api/healthcheck`);
       setMongoHealth(result.data.status);
     };
+    checkHealth();
     const checkTimer = setInterval(() => checkHealth(), 1000);
     return () => {
       clearInterval(checkTimer);
